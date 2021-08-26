@@ -60,6 +60,7 @@ def webp_check(file_dir):
                 webp_path = file_path.replace(f".{ext}", '.webp')
                 logger.info(webp_path)
 
+                # if True:
                 if not os.path.exists(webp_path):
                     convert2webp(file_path, webp_path)
                     logger.info(f"'{file_path}' Converted to '{webp_path}'")
@@ -80,14 +81,17 @@ def webp_check(file_dir):
 
 
 def convert2webp(f_image, webp_image):
-    if f_image.endswith(".gif"):
-        quality = {"quality": GIF_QUALITY}
-        im = Image.open(f_image)
-        im.save(webp_image, 'webp', **quality, duration=im.info["duration"], save_all=True)
-    else:
-        im = Image.open(f_image).convert("RGB")
-        im.save(webp_image, "webp")
-        im.close()
+    try:
+        if f_image.endswith(".gif"):
+            quality = {"quality": GIF_QUALITY}
+            im = Image.open(f_image)
+            im.save(webp_image, 'webp', **quality, duration=im.info["duration"], save_all=True)
+        else:
+            im = Image.open(f_image).convert("RGB")
+            im.save(webp_image, "webp")
+            im.close()
+    except Exception as e:
+        print(e)
 
 
 def purge_cloudflare_cache():
