@@ -4,7 +4,7 @@ import sys
 import os
 import requests
 from PIL import Image
-from config.tokens import CF_PURGE_CACHE, CF_ZONE_ID, CF_API_TOKEN, SITE_DOMAIN, FLUSH_DATABASE
+from config.tokens import CF_PURGE_CACHE, CF_ZONE_ID, CF_API_TOKEN, SITE_DOMAIN, FLUSH_DATABASE, GIF_QUALITY
 from requests.exceptions import HTTPError, ConnectTimeout, ReadTimeout, SSLError
 from subprocess import check_output
 
@@ -49,6 +49,7 @@ def replace_path(original_path, new_path):
 def webp_check(file_dir):
     extensions = [".jpg", ".jpeg", ".png", ".gif"]
 
+    # Walk wordpress content uploads folder
     for root, dirs, files in os.walk(file_dir):
         for file_name in files:
             file_path = f"{root}/{file_name}"
@@ -79,9 +80,14 @@ def webp_check(file_dir):
 
 
 def convert2webp(f_image, webp_image):
-    im = Image.open(f_image).convert("RGB")
-    im.save(webp_image, "webp")
-    im.close()
+    if f_image.endswith(".gif"):
+        quality = {"quality": GIF_QUALITY}
+        im = Image.open(f_image)
+        im.save(webp_image, 'webp', **quality, duration=im.info["duration"], save_all=True)
+    else:
+        im = Image.open(f_image).convert("RGB")
+        im.save(webp_image, "webp")
+        im.close()
 
 
 def purge_cloudflare_cache():
