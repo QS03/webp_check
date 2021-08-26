@@ -3,7 +3,7 @@
 import sys
 import os
 import requests
-from PIL import Image
+from PIL import Image, ImageSequence
 from config.tokens import CF_PURGE_CACHE, CF_ZONE_ID, CF_API_TOKEN, SITE_DOMAIN, FLUSH_DATABASE, GIF_QUALITY
 from requests.exceptions import HTTPError, ConnectTimeout, ReadTimeout, SSLError
 from subprocess import check_output
@@ -85,7 +85,11 @@ def convert2webp(f_image, webp_image):
         if f_image.endswith(".gif"):
             quality = {"quality": GIF_QUALITY}
             im = Image.open(f_image)
-            im.save(webp_image, 'webp', **quality, duration=im.info["duration"], save_all=True)
+            try:
+                im.save(webp_image, 'webp', **quality, duration=im.info["duration"], save_all=True)
+            except Exception:
+                sequence = [frame.copy() for frame in ImageSequence.Iterator(im)]
+                sequence[0].save(webp_image, **quality, save_all=True, append_images=sequence[1:])
         else:
             im = Image.open(f_image).convert("RGB")
             im.save(webp_image, "webp")
