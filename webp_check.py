@@ -47,12 +47,14 @@ def replace_path(original_path, new_path):
 
 
 def webp_check(file_dir):
+    extensions = [".jpg", ".jpeg", ".png", ".gif"]
+
     for root, dirs, files in os.walk(file_dir):
         for file_name in files:
             file_path = f"{root}/{file_name}"
             purge_cache = True
 
-            if file_path.endswith((".jpg", ".jpeg", ".png")):
+            if file_path.endswith(tuple(extensions)):
                 ext = file_path.split('.')[-1:][0]
                 webp_path = file_path.replace(f".{ext}", '.webp')
                 logger.info(webp_path)
