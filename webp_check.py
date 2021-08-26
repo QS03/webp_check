@@ -46,6 +46,7 @@ def webp_check(file_dir):
             if file_path.endswith((".jpg", ".jpeg", ".png")):
                 ext = file_path.split('.')[-1:][0]
                 webp_path = file_path.replace(f".{ext}", '.webp')
+                print(webp_path)
 
                 if not os.path.exists(webp_path):
                     convert2webp(file_path, webp_path)
