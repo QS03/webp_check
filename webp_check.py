@@ -49,7 +49,7 @@ def replace_path(original_path, new_path):
 def webp_check(file_dir):
     for root, dirs, files in os.walk(file_dir):
         for file_name in files:
-            file_path = f"{root}{file_name}"
+            file_path = f"{root}/{file_name}"
             purge_cache = True
 
             if file_path.endswith((".jpg", ".jpeg", ".png")):
@@ -57,11 +57,11 @@ def webp_check(file_dir):
                 webp_path = file_path.replace(f".{ext}", '.webp')
                 logger.info(webp_path)
 
-                if os.path.exists(webp_path):
-                    convert2webp(file_path, webp_path)
-                    logger.info(f"'{file_path}' Converted to '{webp_path}'")
-                    replace_path(file_path, webp_path)
-                    purge_cache = True
+                # if os.path.exists(webp_path):
+                convert2webp(file_path, webp_path)
+                logger.info(f"'{file_path}' Converted to '{webp_path}'")
+                replace_path(file_path, webp_path)
+                purge_cache = True
 
             # Flush changes
             command = [
