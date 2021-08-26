@@ -17,6 +17,7 @@ def replace_path(original_path, new_path):
     command = [
         "sudo", "-u", "www-data",
         "wp", "search-replace", original_string, new_string,
+        "wp_posts",
         "--all-tables-with-prefix", f"--url={SITE_DOMAIN}"
                                     "--dry-run",
         "--path=/var/www/html"
@@ -30,6 +31,7 @@ def replace_path(original_path, new_path):
     command = [
         "sudo", "-u", "www-data",
         "wp", "search-replace", original_string, new_string,
+        "wp_posts",
         "--all-tables-with-prefix", f"--url={SITE_DOMAIN}"
                                     "--dry-run",
         "--path=/var/www/html"
