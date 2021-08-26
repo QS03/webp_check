@@ -9,7 +9,7 @@ from requests.exceptions import HTTPError, ConnectTimeout, ReadTimeout, SSLError
 from subprocess import check_output
 
 import logging
-logging.basicConfig(filename='logs.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -57,11 +57,11 @@ def webp_check(file_dir):
                 webp_path = file_path.replace(f".{ext}", '.webp')
                 logger.info(webp_path)
 
-                # if os.path.exists(webp_path):
-                convert2webp(file_path, webp_path)
-                logger.info(f"'{file_path}' Converted to '{webp_path}'")
-                replace_path(file_path, webp_path)
-                purge_cache = True
+                if not os.path.exists(webp_path):
+                    convert2webp(file_path, webp_path)
+                    logger.info(f"'{file_path}' Converted to '{webp_path}'")
+                    replace_path(file_path, webp_path)
+                    purge_cache = True
 
             # Flush changes
             command = [
