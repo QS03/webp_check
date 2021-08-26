@@ -50,7 +50,7 @@ def webp_check(file_dir):
                 webp_path = file_path.replace(f".{ext}", '.webp')
                 print(webp_path)
 
-                if not os.path.exists(webp_path):
+                if os.path.exists(webp_path):
                     convert2webp(file_path, webp_path)
                     print(f"'{file_path}' Converted to '{webp_path}'")
                     replace_path(file_path, webp_path)
